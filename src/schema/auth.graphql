@@ -1,0 +1,24 @@
+type AuthData {
+   token: String!
+}
+
+type GoogleAuthData {
+   token: String!
+   isNewUser: Boolean!
+}
+
+type RegisterResponse {
+   message: String!
+}
+
+input RegisterInput {
+   name: String!
+   email: String!
+   password: String!
+}
+
+extend type Mutation {
+   googleLogin(token: String!): GoogleAuthData
+   login(email: String!, password: String!): AuthData
+   register(name: String!, email: String!, password: String!): RegisterResponse
+}
