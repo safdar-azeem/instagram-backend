@@ -1,0 +1,18 @@
+type Comment {
+   _id: ID!
+   user: User!
+   post: Post!
+   likes: [ID]!
+   content: String!
+   createdAt: Date!
+}
+
+type Query {
+   getComments(comments: [ID!]!): [Comment!]!
+}
+
+type Mutation {
+   likeComment(commentId: ID!): Boolean!
+   deleteComment(commentId: ID!): Boolean!
+   createComment(content: String!, postId: ID!): Comment!
+}
