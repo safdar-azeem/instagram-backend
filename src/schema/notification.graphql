@@ -1,0 +1,23 @@
+type Notification {
+   _id: ID!
+   type: String!
+   sender: User!
+   receiver: User!
+   post: Post
+   createdAt: Date!
+   isSeen: Boolean!
+   isRemoved: Boolean!
+}
+
+type Query {
+   getNotifications: [Notification!]!
+   countUnSeenNotifications: Int!
+}
+
+type Mutation {
+   markAllNotificationsSeen: Boolean!
+}
+
+type Subscription {
+   newNotification: Notification!
+}
