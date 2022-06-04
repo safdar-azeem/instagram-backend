@@ -1,0 +1,26 @@
+type Post {
+   _id: ID!
+   content: String
+   photo: String
+   user: User
+   createdAt: Date
+   likes: [ID]
+   comments: [ID]
+   isPublic: Boolean
+}
+
+type Query {
+   getAllPosts: [Post]!
+   getBookmarkedPosts: [Post]!
+   getPostById(postId: ID!): Post!
+   explorePosts(limit: Int): [Post]!
+   getPostsByUser(userId: ID!): [Post]!
+}
+
+type Mutation {
+   likePost(postId: ID!): Boolean!
+   deletePost(postId: ID!): Boolean!
+   uploadPhoto(file: Upload!): String!
+   bookmarkPost(postId: ID!): Boolean!
+   createPost(content: String, photo: String, isPublic: Boolean): Post!
+}
