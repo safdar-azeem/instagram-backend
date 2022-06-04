@@ -1,0 +1,40 @@
+type User {
+   _id: ID!
+   name: String!
+   bio: String
+   posts: [ID]
+   cover: String
+   avatar: String
+   website: String
+   createdAt: Date
+   followers: [ID]
+   following: [ID]
+   bookmarks: [ID]
+   location: String
+   dateOfBirth: Date
+   totalMessages: Int
+   profession: String
+   isVerified: Boolean
+   notifications: [ID]
+   totalNotifications: Int
+}
+
+type Query {
+   me: User
+   getUserById(id: ID!): User
+   searchUsersByName(name: String!): [User]
+}
+
+type Mutation {
+   followOrUnfollowUser(userId: ID!): Boolean
+   updateProfile(
+      name: String
+      bio: String
+      avatar: String
+      location: String
+      website: String
+      cover: String
+      profession: String
+      dateOfBirth: String
+   ): Boolean
+}
