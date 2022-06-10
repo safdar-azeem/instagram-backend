@@ -9,7 +9,7 @@ const connectToMongoDB = async (): Promise<void> => {
       await mongoose.connect(db, {
         autoIndex: true,
       })
-      console.log('MongoDB connected....')
+      console.log('MongoDB connected...')
     } else {
       throw new Error('MongoDB URI not found.')
     }
