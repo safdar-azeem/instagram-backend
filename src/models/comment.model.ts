@@ -7,8 +7,8 @@ const CommentSchema: Schema<CommentDocument> = new Schema<CommentDocument>({
       trim: true,
    },
    user: {
-      type: Schema.Types.ObjectId,
       ref: 'User',
+      type: Schema.Types.ObjectId,
       required: [true, 'User is required'],
    },
    post: {
