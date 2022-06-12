@@ -1,11 +1,11 @@
 type Post {
    _id: ID!
-   content: String
-   photo: String
    user: User
-   createdAt: Date
    likes: [ID]
+   photo: String
    comments: [ID]
+   createdAt: Date
+   content: String
    isPublic: Boolean
 }
 
