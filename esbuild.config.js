@@ -3,8 +3,8 @@ const esbuild = require('esbuild')
 esbuild
    .build({
       entryPoints: ['src/server.ts'],
-      bundle: true,
       outfile: 'dist/index.js',
+      bundle: true,
       platform: 'node',
       sourcemap: true,
       minify: true,
