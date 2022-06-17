@@ -32,7 +32,7 @@ export const UploadMutation: MutationResolvers = {
             stream.pipe(uploadStream)
          })
          const result: any = await uploadPromise
-         return result.secure_url
+         return result.secure_url.replace('/upload/', '/upload/w_700,c_scale,q_auto,f_auto/')
       } catch (err) {
          throw new GraphQLError(err.message)
       }
