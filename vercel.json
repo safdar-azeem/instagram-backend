@@ -1,7 +1,7 @@
 {
    "version": 2,
    "name": "connected",
-   "builds": [{ "src": "/dist/index.js", "use": "@vercel/node", "config": { "includeFiles": "dist/**" } }],
-   "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }],
-   "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }]
+   "builds": [{ "src": "src/index.ts", "use": "@vercel/node-ts" }],
+   "routes": [{ "src": "/(.*)", "dest": "src/index.ts" }],
+   "rewrites": [{ "source": "/(.*)", "destination": "src/index.ts" }]
 }
