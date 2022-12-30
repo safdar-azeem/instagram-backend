@@ -5,7 +5,7 @@ type Comment {
    content: String!
    user: User!
    post: Post!
-   createdAt: String!
+   createdAt: Date!
    likes: [ID]!
 }
 `
