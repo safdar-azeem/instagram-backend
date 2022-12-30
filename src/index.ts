@@ -20,6 +20,7 @@ const server = new ApolloServer({
    resolvers,
    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
    csrfPrevention: false,
+   introspection: true,
 })
 
 const startApolloServer = async () => {
