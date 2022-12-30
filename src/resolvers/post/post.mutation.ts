@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql'
-import { PostModel, UserModel } from '../../models'
+import { CommentModel, PostModel, UserModel } from '../../models'
 
 const PostMutations = {
    createPost: async (_, args, { user, error }) => {
@@ -40,6 +40,13 @@ const PostMutations = {
          if (post.user.toString() !== user._id.toString()) throw new GraphQLError('Action not allowed')
          await post.remove()
          await UserModel.findByIdAndUpdate(user._id, { $pull: { posts: postId } })
+
+         setTimeout(() => {
+            post.comments.forEach(async (commentId) => {
+               await CommentModel.findById(commentId).then((comment) => comment.remove())
+            })
+         }, 0)
+
          return true
       } catch (err) {
          throw new GraphQLError(err.message)
