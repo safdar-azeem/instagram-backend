@@ -2,6 +2,5 @@
    "version": 2,
    "name": "connected",
    "builds": [{ "src": "src/index.ts", "use": "@vercel/node-ts" }],
-   "routes": [{ "src": "/(.*)", "dest": "src/index.ts" }],
-   "rewrites": [{ "source": "/(.*)", "destination": "src/index.ts" }]
+   "rewrites": [{ "source": "/graphql", "destination": "/" }]
 }
