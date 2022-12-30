@@ -2,6 +2,5 @@
    "version": 2,
    "name": "connected",
    "builds": [{ "src": "/src/index.ts", "use": "@vercel/node" }],
-   "routes": [{ "src": "/(.*)", "dest": "/dist" }],
-   "rewrites": [{ "source": "/(.*)", "destination": "/dist" }]
+   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
