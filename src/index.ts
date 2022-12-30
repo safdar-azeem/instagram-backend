@@ -39,8 +39,9 @@ const startApolloServer = async () => {
             },
          })
       )
-      await new Promise((resolve: any) => httpServer.listen({ port: 4008 }, resolve))
-      console.log(`🚀  Server ready at: http://localhost:4008/graphql`)
+      const port = process.env.PORT || 4010
+      await new Promise((resolve: any) => httpServer.listen({ port }, resolve))
+      console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
    } catch (err) {
       console.error(err.message)
       process.exit(1)
