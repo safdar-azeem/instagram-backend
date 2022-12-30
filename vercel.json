@@ -2,5 +2,6 @@
    "version": 2,
    "name": "connected",
    "builds": [{ "src": "/dist/index.js", "use": "@vercel/node", "config": { "includeFiles": "dist/**" } }],
-   "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }]
+   "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }],
+   "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }]
 }
