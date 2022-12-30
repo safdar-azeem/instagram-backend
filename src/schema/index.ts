@@ -1,5 +1,6 @@
 import UserSchema from './user.schema'
 import postSchema from './post.schema'
+import commentSchema from './comment.schema'
 
 const typeDefs = `#graphql
    
@@ -8,6 +9,7 @@ const typeDefs = `#graphql
 
    ${UserSchema}
    ${postSchema}
+   ${commentSchema}
 `
 
 export default typeDefs
