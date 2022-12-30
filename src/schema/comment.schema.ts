@@ -4,13 +4,13 @@ const commentSchema = `#graphql
 ${CommentTypes}
 
 type Query {
-      getComments(postId: ID!): [Comment!]!
+      getComments(comments: [ID!]!): [Comment!]!
 }
 
 type Mutation {
       createComment(content: String!, postId: ID!): Comment!
-      deleteComment(commentId: ID!): Comment!
-      likeComment(commentId: ID!): Comment!
+      likeComment(commentId: ID!): Boolean!
+      deleteComment(commentId: ID!): Boolean!
 }
 `
 
