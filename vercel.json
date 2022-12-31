@@ -1,6 +1,7 @@
 {
    "version": 2,
    "name": "connected",
-   "builds": [{ "src": "/src/index.tsx", "use": "@now/next" }],
-   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+   "builds": [{ "src": "/src/index.ts", "use": "@now/next" }],
+   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+   "routes": [{ "src": "/(.*)", "dest": "/src/index.ts" }]
 }
