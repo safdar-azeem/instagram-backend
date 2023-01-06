@@ -38,19 +38,19 @@ const UserMutations = {
          throw new GraphQLError(err.message)
       }
    },
-   followOrUnfollowUser: async (_, { id }, { user, error }) => {
+   followOrUnfollowUser: async (_, { userId }, { user, error }) => {
       try {
          if (error) throw error
-         const userToFollow = (await UserModel.findById(id)) as any
+         const userToFollow = (await UserModel.findById(userId)) as any
          if (!userToFollow) {
             throw new GraphQLError('User not found')
          }
-         const isFollowing = user.following.includes(id)
+         const isFollowing = user.following.includes(userId)
          if (isFollowing) {
-            user.following.pull(id)
+            user.following.pull(userId)
             userToFollow.followers.pull(user._id)
          } else {
-            user.following.push(id)
+            user.following.push(userId)
             userToFollow.followers.push(user._id)
          }
          await user.save({ validateBeforeSave: false })
