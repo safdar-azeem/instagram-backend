@@ -8,6 +8,7 @@ type Query {
    getPostById(postId: ID!): Post!
    getPostsByUser(userId: ID!): [Post]!
    getBookmarkedPosts: [Post]!
+   explorePosts(skip: Int, limit: Int): [Post]!
 }
 
 type Mutation {
@@ -16,6 +17,7 @@ type Mutation {
    deletePost(postId: ID!): Boolean!
    likePost(postId: ID!): Boolean!
    bookmarkPost(postId: ID!): Boolean!
+   
 }
 `
 
