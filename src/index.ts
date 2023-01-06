@@ -2,7 +2,8 @@ require('dotenv').config()
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default'
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled'
+
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
@@ -19,12 +20,7 @@ const httpServer = http.createServer(app)
 const server = new ApolloServer({
    typeDefs,
    resolvers,
-   plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageProductionDefault(),
-   ],
-   csrfPrevention: false,
-   introspection: true,
+   plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageDisabled()],
 })
 
 const startApolloServer = async () => {
@@ -44,7 +40,7 @@ const startApolloServer = async () => {
             },
          })
       )
-      const port = process.env.PORT || 4010
+      const port = process.env.PORT || 4012
       await new Promise((resolve: any) => httpServer.listen({ port }, resolve))
       console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
    } catch (err) {
