@@ -46,6 +46,14 @@ const PostQueries = {
          throw new GraphQLError(err.message)
       }
    },
+   explorePosts: async (_, { skip, limit }) => {
+      try {
+         const posts = await PostModel.find().sort({ createdAt: -1 }).skip(skip).limit(limit).populate('user')
+         return posts
+      } catch (err) {
+         throw new GraphQLError(err.message)
+      }
+   },
 }
 
 export default PostQueries
