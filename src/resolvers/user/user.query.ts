@@ -18,6 +18,20 @@ const UserQueries = {
          throw new GraphQLError(err.message)
       }
    },
+   searchUsersByName: async (_, { name }) => {
+      try {
+         if (name.length < 2) {
+            throw new GraphQLError('Name must be at least 2 characters long')
+         }
+         const users = await UserModel.find({ name: { $regex: name, $options: 'i' } })
+         if (!users) {
+            throw new GraphQLError('No users found')
+         }
+         return users
+      } catch (err) {
+         throw new GraphQLError(err.message)
+      }
+   },
 }
 
 export default UserQueries
