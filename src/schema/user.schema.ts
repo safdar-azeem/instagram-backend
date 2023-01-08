@@ -6,6 +6,7 @@ ${UserTypes}
 type Query {
    me: User
    getUserById(id: ID!): User
+   searchUsersByName(name: String!): [User]
 }
 
 type Mutation {
@@ -22,7 +23,7 @@ type Mutation {
       dateOfBirth: String
    ): Boolean
    followOrUnfollowUser(userId: ID!): Boolean
-   searchUsersByName(name: String!): [User]
+   
 }
 `
 
