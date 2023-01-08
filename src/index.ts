@@ -24,6 +24,7 @@ const server = new ApolloServer({
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageLocalDefault({ embed: true }),
    ],
+   introspection: process.env.NODE_ENV !== 'production',
 })
 
 const startApolloServer = async () => {
