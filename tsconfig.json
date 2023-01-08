@@ -16,7 +16,8 @@
     "incremental": true,    
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ],
   "include": [
     "./src/**/*"
