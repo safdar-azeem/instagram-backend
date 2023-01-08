@@ -60,14 +60,6 @@ const UserMutations = {
          throw new GraphQLError(err.message)
       }
    },
-   searchUsersByName: async (_, { name }) => {
-      try {
-         const users = await UserModel.find({ name: { $regex: name, $options: 'i' } })
-         return users
-      } catch (err) {
-         throw new GraphQLError(err.message)
-      }
-   },
 }
 
 export default UserMutations
