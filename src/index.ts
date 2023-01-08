@@ -2,7 +2,7 @@ require('dotenv').config()
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled'
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
 
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -20,7 +20,10 @@ const httpServer = http.createServer(app)
 const server = new ApolloServer({
    typeDefs,
    resolvers,
-   plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageDisabled()],
+   plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+   ],
 })
 
 const startApolloServer = async () => {
