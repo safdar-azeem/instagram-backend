@@ -5,8 +5,12 @@
    "scripts": {
       "build": "tsc",
       "dev": "nodemon src/index.ts --exec 'ts-node src/index.ts'",
+<<<<<<< HEAD
       "prebuild": "mkdir dist",
       "compile": "tsc"
+=======
+      "start": "node build/index.js"
+>>>>>>> parent of 2e2489d (Update package.json)
    },
    "dependencies": {
       "@apollo/server": "^4.3.0",
