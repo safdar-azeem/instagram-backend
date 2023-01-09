@@ -24,7 +24,7 @@ const UserQueries = {
             throw new GraphQLError('Name must be at least 2 characters long')
          }
          const users = await UserModel.find({ name: { $regex: name, $options: 'i' } })
-         if (!users) {
+         if (users.length === 0) {
             throw new GraphQLError('No users found')
          }
          return users
