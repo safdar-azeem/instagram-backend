@@ -6,7 +6,7 @@
       "build": "tsc",
       "dev": "nodemon src/index.ts --exec 'ts-node src/index.ts'",
       "prebuild": "mkdir dist",
-      "start": "npm run compile && node ./dist/index.js"
+      "compile": "tsc"
    },
    "dependencies": {
       "@apollo/server": "^4.3.0",
