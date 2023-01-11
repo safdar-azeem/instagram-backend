@@ -5,12 +5,12 @@ ${NotificationTypes}
 
 type Query {
     getNotifications: [notification!]!
-    countUnSeenNotifications : Int!
+    countUnSeenNotifications: Int!
 }
 
 type Mutation {
+    markAllNotificationsSeen: Boolean!
     markAsRead(id: ID!): notification!
-    markAsSeen(id: ID!): notification!
 }
 
 type Subscription {
