@@ -8,7 +8,6 @@ export interface Notification extends Document {
    receiver: User | string
    post: Post | string
    createdAt: Date
-   isRead: boolean
    isSeen: boolean
 }
 
@@ -39,10 +38,6 @@ const notificationSchema = new Schema({
    createdAt: {
       type: Date,
       default: Date.now,
-   },
-   isRead: {
-      type: Boolean,
-      default: false,
    },
    isSeen: {
       type: Boolean,

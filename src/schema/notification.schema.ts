@@ -10,7 +10,6 @@ type Query {
 
 type Mutation {
     markAllNotificationsSeen: Boolean!
-    markAsRead(id: ID!): notification!
 }
 
 type Subscription {

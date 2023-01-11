@@ -7,7 +7,6 @@ type notification {
    receiver: User!
    post: Post
    createdAt: Date!
-   isRead: Boolean!
    isSeen: Boolean!    
 }
 `
