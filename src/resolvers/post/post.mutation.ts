@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql'
-import { CommentModel, PostModel, UserModel } from '../../models'
+import { CommentModel, NotificationModel, PostModel, UserModel } from '../../models'
+import { removeNotification, sendNotification } from '../notification/notification.mutation'
 
 const PostMutations = {
    createPost: async (_, args, { user, error }) => {
@@ -23,8 +24,10 @@ const PostMutations = {
          const isLiked = post.likes.find((like) => like.toString() === user._id.toString())
          if (isLiked) {
             post.likes = post.likes.filter((like) => like.toString() !== user._id.toString())
+            removeNotification('like', user._id, post.user, post._id)
          } else {
             post.likes.push(user._id)
+            sendNotification('like', user._id, post.user, post._id)
          }
          await post.save()
          return !isLiked
@@ -40,10 +43,13 @@ const PostMutations = {
          if (post.user.toString() !== user._id.toString()) throw new GraphQLError('Action not allowed')
          await post.remove()
          await UserModel.findByIdAndUpdate(user._id, { $pull: { posts: postId } })
-
-         setTimeout(() => {
+         setTimeout(async () => {
             post.comments.forEach(async (commentId) => {
                await CommentModel.findById(commentId).then((comment) => comment.remove())
+            })
+
+            await NotificationModel.deleteMany({
+               $or: [{ post: postId }, { comment: { $in: post.comments } }],
             })
          }, 0)
 
