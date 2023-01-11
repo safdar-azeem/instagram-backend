@@ -19,6 +19,18 @@ const notificationQueries = {
          throw new GraphQLError(err.message)
       }
    },
+   countUnSeenNotifications: async (parent: any, args: any, { user, error }: any) => {
+      try {
+         if (error) throw new GraphQLError(error)
+         const count = await NotificationModel.countDocuments({
+            receiver: user._id,
+            isSeen: false,
+         })
+         return count
+      } catch (err) {
+         throw new GraphQLError(err.message)
+      }
+   },
 }
 
 export default notificationQueries
