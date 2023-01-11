@@ -1,6 +1,32 @@
 import jwt from 'jsonwebtoken'
-import { model, Schema } from 'mongoose'
+import { Document, model, Schema } from 'mongoose'
 import { comparePassword, hashPassword } from '../utils/passwordUtils'
+import { Post } from './post.modal'
+import { Notification } from './notification.modal'
+
+export interface User extends Document {
+   name: string
+   email: string
+   password: string
+   avatar: string
+   location: string
+   website: string
+   profession: string
+   cover: string
+   bio: string
+   dateOfBirth: Date
+   createdAt: Date
+   following: Array<User | string>
+   followers: Array<User | string>
+   totalNotifications: number
+   totalMessages: number
+   isVerified: boolean
+   posts: Array<Post | string>
+   bookmarks: Array<Post | string>
+   notifications: Array<Notification | string>
+   comparePassword: (candidatePassword: string) => Promise<boolean>
+   generateAuthToken: () => string
+}
 
 const userSchema = new Schema({
    name: {
@@ -102,6 +128,12 @@ const userSchema = new Schema({
          ref: 'Post',
       },
    ],
+   notifications: [
+      {
+         type: Schema.Types.ObjectId,
+         ref: 'Notification',
+      },
+   ],
 })
 
 userSchema.pre('save', async function (next) {
@@ -134,6 +166,6 @@ userSchema.methods.generateAuthToken = function () {
    return token
 }
 
-const UserModel = model('User', userSchema)
+const UserModel = model<User>('User', userSchema)
 
 export default UserModel
