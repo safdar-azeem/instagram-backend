@@ -13,15 +13,37 @@ import connectToMongoDB from './config/connectDB.config'
 import authMiddleware from './middleware/auth.middleware'
 import resolvers from './resolvers'
 import typeDefs from './schema'
+import { WebSocketServer } from 'ws'
+import { useServer } from 'graphql-ws/lib/use/ws'
+import { makeExecutableSchema } from '@graphql-tools/schema'
+import { PubSub } from 'graphql-subscriptions'
 
+export const pubsub = new PubSub()
 const app = express()
+const schema = makeExecutableSchema({ typeDefs, resolvers })
+
 const httpServer = http.createServer(app)
+const wsServer = new WebSocketServer({
+   server: httpServer,
+   path: '/graphql',
+})
+const serverCleenup = useServer({ schema }, wsServer)
 
 const server = new ApolloServer({
-   typeDefs,
-   resolvers,
-   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+   schema,
    introspection: process.env.NODE_ENV !== 'production',
+   plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+         async serverWillStart() {
+            return {
+               async drainServer() {
+                  await serverCleenup.dispose()
+               },
+            }
+         },
+      },
+   ],
 })
 
 const startApolloServer = async () => {
@@ -42,8 +64,9 @@ const startApolloServer = async () => {
          })
       )
       const port = process.env.PORT || 4012
-      await new Promise((resolve: any) => httpServer.listen({ port }, resolve))
-      console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
+      httpServer.listen(port, () => {
+         console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
+      })
    } catch (err) {
       console.error(err.message)
       process.exit(1)
