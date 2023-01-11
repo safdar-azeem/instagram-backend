@@ -7,6 +7,7 @@ import CommentMutations from './comment/comment.mutation'
 import notificationQueries from './notification/notification.query'
 import UploadMutation from './upload/upload.mutation'
 import notificationSubscription from './notification/notification.subscription'
+import { markAllNotificationsSeen } from './notification/notification.mutation'
 
 const resolvers = {
    Query: {
@@ -20,6 +21,7 @@ const resolvers = {
       ...PostMutations,
       ...UploadMutation,
       ...CommentMutations,
+      markAllNotificationsSeen,
    },
    Subscription: {
       ...notificationSubscription,

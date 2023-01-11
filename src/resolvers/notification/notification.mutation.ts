@@ -52,4 +52,24 @@ const removeNotification = async (
    }
 }
 
-export { sendNotification, removeNotification }
+const markAllNotificationsSeen = async (parent: any, args: any, { user, error }: any) => {
+   try {
+      if (error) throw new GraphQLError(error)
+      await NotificationModel.updateMany(
+         {
+            receiver: user._id,
+            isSeen: false,
+         },
+         {
+            $set: {
+               isSeen: true,
+            },
+         }
+      )
+      return true
+   } catch (err) {
+      throw new GraphQLError(err.message)
+   }
+}
+
+export { sendNotification, removeNotification, markAllNotificationsSeen }
