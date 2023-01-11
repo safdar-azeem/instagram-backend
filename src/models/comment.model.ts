@@ -1,11 +1,13 @@
-import { Document, model, Schema } from 'mongoose'
+import { Document, model, ObjectId, Schema } from 'mongoose'
+import { User } from './user.model'
+import { Post } from './post.modal'
 
 export interface Comment extends Document {
    content: string
-   user: string
-   post: string
+   user: User | string
+   post: Post | string
    createdAt: Date
-   likes: string[]
+   likes: Array<User | string>
 }
 
 const CommentSchema = new Schema({
