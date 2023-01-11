@@ -50,7 +50,6 @@ const UserMutations = {
          if (isFollowing) {
             user.following.pull(userId)
             userToFollow.followers.pull(user._id)
-            // ( type: string, sender: unknown, receiver: unknown, postId?: unknown, commentId?: unknown)
             await removeNotification('follow', user._id, userToFollow._id)
          } else {
             user.following.push(userId)

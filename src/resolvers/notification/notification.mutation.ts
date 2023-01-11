@@ -41,7 +41,6 @@ const removeNotification = async (
 ) => {
    try {
       const notificationObj = { sender, receiver, post: postId, comment: commentId, type }
-      console.log('notificationObj', notificationObj)
       const findNotification = await NotificationModel.findOne(notificationObj)
       if (findNotification) {
          await findNotification.remove()

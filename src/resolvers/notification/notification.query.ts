@@ -4,7 +4,6 @@ import { NotificationModel } from '../../models'
 const notificationQueries = {
    getNotifications: async (parent: any, args: any, { user, error }: any) => {
       try {
-         console.log('user', user)
          if (error) throw new GraphQLError(error)
          const notifications = await NotificationModel.find({
             _id: {
@@ -17,7 +16,7 @@ const notificationQueries = {
             .sort({ createdAt: -1 })
          return notifications
       } catch (err) {
-         console.log(err)
+         throw new GraphQLError(err.message)
       }
    },
 }
