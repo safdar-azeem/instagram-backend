@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql'
-import { PostModel, UserModel, CommentModel } from '../../models'
+import { CommentModel, NotificationModel, PostModel } from '../../models'
+import { removeNotification, sendNotification } from '../notification/notification.mutation'
 
 const CommentMutations = {
    createComment: async (parent: any, args: any, { user, error }: any) => {
@@ -20,6 +21,8 @@ const CommentMutations = {
 
          post.comments.push(comment._id)
          await post.save()
+
+         sendNotification('comment', user._id, post.user, post._id, comment._id)
 
          return {
             ...comment._doc,
@@ -44,8 +47,10 @@ const CommentMutations = {
          const isLiked = comment.likes.find((id: any) => id.toString() === user._id.toString())
          if (isLiked) {
             comment.likes = comment.likes.filter((id: any) => id.toString() !== user._id.toString())
+            removeNotification('like-comment', user._id, comment.user, comment._id)
          } else {
             comment.likes.push(user._id)
+            sendNotification('like-comment', user._id, comment.user, comment._id)
          }
 
          await comment.save()
@@ -66,7 +71,9 @@ const CommentMutations = {
             throw new GraphQLError('Comment not found')
          }
 
-         if (comment.user.toString() !== user._id.toString()) {
+         // @ts-ignore
+         const commentPostUserId = comment.post.user.toString()
+         if (user._id.toString() !== comment.user.toString() && user._id.toString() !== commentPostUserId) {
             throw new GraphQLError('Action not allowed')
          }
 
@@ -79,6 +86,10 @@ const CommentMutations = {
 
          post.comments = post.comments.filter((id: any) => id.toString() !== commentId.toString())
          await post.save()
+
+         // @ts-ignore
+         const commentPostId = comment.post._id.toString()
+         removeNotification('comment', comment.user, post.user, commentPostId, commentId)
 
          return true
       } catch (err) {
