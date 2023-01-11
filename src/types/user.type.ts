@@ -31,6 +31,7 @@ type User {
    isVerified: Boolean
    profession: String
    bookmarks: [ID]
+   notifications: [ID]
 }
 `
 
