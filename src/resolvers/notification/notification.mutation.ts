@@ -58,6 +58,7 @@ const removeNotification = async (
       const findNotification = await NotificationModel.findOne(notificationObj)
          .populate('sender')
          .populate('post')
+      if (!findNotification) return
       // @ts-ignore
       const notification: any = { ...findNotification._doc, isRemoved: true }
       if (findNotification) {
