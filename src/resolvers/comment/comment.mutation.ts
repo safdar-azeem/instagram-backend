@@ -17,6 +17,7 @@ const CommentMutations = {
             content,
             user: user._id,
             post: postId,
+            postUser: post.user,
          })
 
          post.comments.push(comment._id)
@@ -47,10 +48,10 @@ const CommentMutations = {
          const isLiked = comment.likes.find((id: any) => id.toString() === user._id.toString())
          if (isLiked) {
             comment.likes = comment.likes.filter((id: any) => id.toString() !== user._id.toString())
-            removeNotification('like-comment', user._id, comment.user, comment._id)
+            removeNotification('like-comment', user._id, comment.postUser, comment?.post, comment._id)
          } else {
             comment.likes.push(user._id)
-            sendNotification('like-comment', user._id, comment.user, comment._id)
+            sendNotification('like-comment', user._id, comment.postUser, comment?.post, comment._id)
          }
 
          await comment.save()
