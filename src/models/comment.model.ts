@@ -6,6 +6,7 @@ export interface Comment extends Document {
    content: string
    user: User | string
    post: Post | string
+   postUser: User | string
    createdAt: Date
    likes: Array<User | string>
 }
@@ -24,6 +25,11 @@ const CommentSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Post',
       required: [true, 'Post id is required'],
+   },
+   postUser: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Post user id is required'],
    },
    createdAt: {
       type: Date,
