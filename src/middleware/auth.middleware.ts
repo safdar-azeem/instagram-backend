@@ -2,8 +2,7 @@ import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/user.model'
 
-const authMiddleware = async ({ req }): Promise<{ user: any; error: any }> => {
-   const token = req.headers.authorization
+const authMiddleware = async (token: any): Promise<{ user: any; error: any }> => {
    if (!token) {
       return {
          error: new GraphQLError('Authentication token must be provided in the Authorization header'),
