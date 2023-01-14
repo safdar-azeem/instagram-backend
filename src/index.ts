@@ -2,21 +2,19 @@ require('dotenv').config()
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
-
+import { makeExecutableSchema } from '@graphql-tools/schema'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
+import { PubSub } from 'graphql-subscriptions'
 import { graphqlUploadExpress } from 'graphql-upload-minimal'
+import { useServer } from 'graphql-ws/lib/use/ws'
 import http from 'http'
+import { WebSocketServer } from 'ws'
 import connectToMongoDB from './config/connectDB.config'
 import authMiddleware from './middleware/auth.middleware'
 import resolvers from './resolvers'
 import typeDefs from './schema'
-import { WebSocketServer } from 'ws'
-import { useServer } from 'graphql-ws/lib/use/ws'
-import { makeExecutableSchema } from '@graphql-tools/schema'
-import { PubSub } from 'graphql-subscriptions'
 
 export const pubsub = new PubSub()
 const app = express()
@@ -25,9 +23,22 @@ const schema = makeExecutableSchema({ typeDefs, resolvers })
 const httpServer = http.createServer(app)
 const wsServer = new WebSocketServer({
    server: httpServer,
-   path: '/graphql',
+   path: '/subscriptions',
+   skipUTF8Validation: true,
 })
-const serverCleenup = useServer({ schema }, wsServer)
+
+const serverCleenup = useServer(
+   {
+      schema,
+      context: async (ctx: any, msg, args) => {
+         if (ctx.connectionParams.Authorization) {
+            const { user, error } = await authMiddleware(ctx.connectionParams.Authorization)
+            return { user, error }
+         }
+      },
+   },
+   wsServer
+)
 
 const server = new ApolloServer({
    schema,
@@ -58,12 +69,12 @@ const startApolloServer = async () => {
          bodyParser.urlencoded({ extended: true }),
          expressMiddleware(server, {
             context: async (context) => {
-               const { user, error } = await authMiddleware(context)
+               const { user, error } = await authMiddleware(context.req.headers.authorization)
                return { user, error }
             },
          })
       )
-      const port = process.env.PORT || 4012
+      const port = process.env.PORT || 4000
       httpServer.listen(port, () => {
          console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
       })
