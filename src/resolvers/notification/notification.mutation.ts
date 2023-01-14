@@ -60,7 +60,6 @@ const removeNotification = async (
          .populate('post')
       // @ts-ignore
       const notification: any = { ...findNotification._doc, isRemoved: true }
-      console.log(notification)
       if (findNotification) {
          await findNotification.remove()
          await UserModel.findByIdAndUpdate(receiver, { $pull: { notifications: findNotification._id } })
