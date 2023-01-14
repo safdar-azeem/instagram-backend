@@ -18,6 +18,16 @@ const PostQueries = {
          throw new GraphQLError(err.message)
       }
    },
+   getPostById: async (_, { postId }, { error }) => {
+      if (error) throw new GraphQLError(error)
+      try {
+         const post = await PostModel.findById(postId).populate('user')
+         if (!post) throw new GraphQLError('Post not found')
+         return post
+      } catch (err) {
+         throw new GraphQLError(err.message)
+      }
+   },
    getPostsByUser: async (_, { userId }, { error }) => {
       if (error) throw new GraphQLError(error)
       try {
