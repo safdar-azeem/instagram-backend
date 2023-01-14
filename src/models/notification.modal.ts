@@ -9,6 +9,7 @@ export interface Notification extends Document {
    post: Post | string
    createdAt: Date
    isSeen: boolean
+   isRemoved: boolean
 }
 
 const notificationSchema = new Schema({
@@ -40,6 +41,10 @@ const notificationSchema = new Schema({
       default: Date.now,
    },
    isSeen: {
+      type: Boolean,
+      default: false,
+   },
+   isRemoved: {
       type: Boolean,
       default: false,
    },
