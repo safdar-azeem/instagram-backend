@@ -11,22 +11,33 @@ const sendNotification = async (
 ) => {
    try {
       if (sender.toString() === receiver.toString()) return
-      const notification = await NotificationModel.create({
+      const notificationReq = {
          sender,
          receiver,
          post: postId,
          comment: commentId,
          type,
-      })
-      const findNotification = await NotificationModel.findOne({
-         sender,
-         receiver,
-         post: postId,
-         comment: commentId,
-         type,
-      })
-      await pubsub.publish('NEW_NOTIFICATION', { newNotification: findNotification })
+      }
+      Object.keys(notificationReq).forEach(
+         (key) => notificationReq[key] === undefined && delete notificationReq[key]
+      )
+      const notification = await NotificationModel.create(notificationReq)
+      const findNotification = await NotificationModel.findOne(notificationReq)
+         .populate('sender')
+         .populate('post')
       await UserModel.findByIdAndUpdate(receiver, { $push: { notifications: notification._id } })
+      await pubsub.publish('NEW_NOTIFICATION', {
+         newNotification: {
+            _id: findNotification?._id,
+            type: findNotification?.type,
+            sender: findNotification?.sender,
+            receiver: findNotification?.receiver,
+            post: findNotification?.post,
+            createdAt: findNotification?.createdAt,
+            isSeen: findNotification?.isSeen,
+            isRemoved: findNotification?.isRemoved,
+         },
+      })
    } catch (err) {
       throw new GraphQLError(err.message)
    }
@@ -40,13 +51,25 @@ const removeNotification = async (
    commentId?: unknown
 ) => {
    try {
-      const notificationObj = { sender, receiver, post: postId, comment: commentId, type }
+      let notificationObj: any = { sender, receiver, post: postId, comment: commentId, type }
+      Object.keys(notificationObj).forEach(
+         (key) => notificationObj[key] === undefined && delete notificationObj[key]
+      )
       const findNotification = await NotificationModel.findOne(notificationObj)
+         .populate('sender')
+         .populate('post')
+      // @ts-ignore
+      const notification: any = { ...findNotification._doc, isRemoved: true }
+      console.log(notification)
       if (findNotification) {
          await findNotification.remove()
          await UserModel.findByIdAndUpdate(receiver, { $pull: { notifications: findNotification._id } })
       }
-      await pubsub.publish('NEW_NOTIFICATION', { newNotification: findNotification })
+      await pubsub.publish('NEW_NOTIFICATION', {
+         newNotification: {
+            ...notification,
+         },
+      })
    } catch (err) {
       throw new GraphQLError(err.message)
    }
