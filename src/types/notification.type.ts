@@ -1,6 +1,6 @@
 const NotificationTypes = `#graphql
 
-type notification {
+type Notification {
    _id: ID!
    type: String!
    sender: User!
@@ -8,6 +8,7 @@ type notification {
    post: Post
    createdAt: Date!
    isSeen: Boolean!    
+   isRemoved: Boolean!
 }
 `
 export default NotificationTypes

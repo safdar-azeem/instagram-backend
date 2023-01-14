@@ -4,7 +4,7 @@ const notificationSchema = `#graphql
 ${NotificationTypes}
 
 type Query {
-    getNotifications: [notification!]!
+    getNotifications: [Notification!]!
     countUnSeenNotifications: Int!
 }
 
@@ -13,7 +13,7 @@ type Mutation {
 }
 
 type Subscription {
-    newNotification: notification!
+    newNotification:Notification!
 }
 `
 
