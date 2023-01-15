@@ -56,9 +56,20 @@ const PostQueries = {
          throw new GraphQLError(err.message)
       }
    },
-   explorePosts: async (_, { skip, limit }) => {
+   explorePosts: async (_, { limit }) => {
       try {
-         const posts = await PostModel.find().sort({ createdAt: -1 }).skip(skip).limit(limit).populate('user')
+         const posts = await PostModel.aggregate([
+            { $sample: { size: limit } },
+            {
+               $lookup: {
+                  from: 'users',
+                  localField: 'user',
+                  foreignField: '_id',
+                  as: 'user',
+               },
+            },
+            { $unwind: '$user' },
+         ])
          return posts
       } catch (err) {
          throw new GraphQLError(err.message)

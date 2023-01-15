@@ -8,7 +8,7 @@ type Query {
    getPostById(postId: ID!): Post!
    getPostsByUser(userId: ID!): [Post]!
    getBookmarkedPosts: [Post]!
-   explorePosts(skip: Int, limit: Int): [Post]!
+   explorePosts(limit: Int): [Post]!
 }
 
 type Mutation {
