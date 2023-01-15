@@ -64,7 +64,7 @@ const startApolloServer = async () => {
       app.use(
          '/graphql',
          graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
-         cors<cors.CorsRequest>({ origin: '*' }),
+         cors<cors.CorsRequest>(),
          bodyParser.json(),
          bodyParser.urlencoded({ extended: true }),
          expressMiddleware(server, {
@@ -75,6 +75,7 @@ const startApolloServer = async () => {
          })
       )
       const port = process.env.PORT || 4000
+
       httpServer.listen(port, () => {
          console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
       })
