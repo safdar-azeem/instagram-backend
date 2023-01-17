@@ -50,11 +50,11 @@ const UserMutations = {
          if (isFollowing) {
             user.following.pull(userId)
             userToFollow.followers.pull(user._id)
-            await removeNotification('follow', user._id, userToFollow._id)
+            removeNotification('follow', user._id, userToFollow._id)
          } else {
             user.following.push(userId)
             userToFollow.followers.push(user._id)
-            await sendNotification('follow', user._id, userToFollow._id)
+            sendNotification('follow', user._id, userToFollow._id)
          }
          await user.save({ validateBeforeSave: false })
          await userToFollow.save({ validateBeforeSave: false })
