@@ -24,7 +24,6 @@ const httpServer = http.createServer(app)
 const wsServer = new WebSocketServer({
    server: httpServer,
    path: '/subscriptions',
-   skipUTF8Validation: true,
 })
 
 const serverCleenup = useServer(
@@ -42,7 +41,7 @@ const serverCleenup = useServer(
 
 const server = new ApolloServer({
    schema,
-   introspection: process.env.NODE_ENV !== 'production',
+   introspection: true,
    plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
@@ -59,8 +58,9 @@ const server = new ApolloServer({
 
 const startApolloServer = async () => {
    try {
-      connectToMongoDB()
+      await connectToMongoDB()
       await server.start()
+
       app.use(
          '/graphql',
          graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
@@ -74,7 +74,7 @@ const startApolloServer = async () => {
             },
          })
       )
-      const port = process.env.PORT || 4000
+      const port = parseInt(process.env.PORT) || 4000
 
       httpServer.listen(port, () => {
          console.log(`🚀  Server ready at: http://localhost:${port}/graphql`)
