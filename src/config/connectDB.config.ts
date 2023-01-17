@@ -4,6 +4,7 @@ const db = process.env.MONGODB_URI
 
 const connectToMongoDB = async (): Promise<void> => {
    try {
+      mongoose.set('strictQuery', false)
       await mongoose.connect(db)
       console.log('MongoDB connected...')
    } catch (err) {
